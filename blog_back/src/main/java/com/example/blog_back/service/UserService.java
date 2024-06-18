@@ -38,6 +38,15 @@ public class UserService {
         return "Success";
     }
     
+    public String getProfileImageName(String userId) {
+        User user = userRepository.findByUserId(userId);
+        if (user != null) {
+            return user.getProfileImageName();
+        } else {
+            throw new RuntimeException("User not found");
+        }
+    }    
+    
     public String getUserNickname(String userId) {
         User user = userRepository.findByUserId(userId);
         return user != null ? user.getUserNickname() : null;

@@ -29,6 +29,7 @@ public class LoginController {
             HttpSession session = request.getSession();
             session.setAttribute("userId", user.getUserId());
             session.setAttribute("userNickname", userService.getUserNickname(user.getUserId()));
+            session.setAttribute("profileImageName", userService.getProfileImageName(user.getUserId()));
         } else {
             // 로그인 실패 시 세션 생성하지 않음
             HttpSession session = request.getSession(false);
@@ -53,8 +54,9 @@ public class LoginController {
         if(session != null) {
             String userId = (String) session.getAttribute("userId");
             String userNickname = (String)session.getAttribute("userNickname");
-            System.out.println("세션 정보: " + userId + " " + userNickname);
-            return ResponseEntity.ok(new UserSession(userId, userNickname));
+            String profileImageName = (String)session.getAttribute("profileImageName");
+            System.out.println("세션 정보: " + userId + " " + userNickname + " " + profileImageName);
+            return ResponseEntity.ok(new UserSession(userId, userNickname, profileImageName));
         } else {
             return ResponseEntity.status(400).body("No active session");
         }
@@ -88,10 +90,12 @@ public class LoginController {
 class UserSession {
     private String userId;
     private String userNickname;
+    private String profileImageName;
     
-    public UserSession(String userId, String userNickname) {
+    public UserSession(String userId, String userNickname, String profileImageName) {
         this.userId = userId;
         this.userNickname = userNickname;
+        this.profileImageName = profileImageName;
     }
     
     public String getUserId() {
@@ -100,5 +104,9 @@ class UserSession {
     
     public String getUserNickname() {
         return userNickname;
+    }
+    
+    public String getProfileImageName() {
+        return profileImageName;
     }
 }
