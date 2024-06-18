@@ -32,6 +32,9 @@ public class User {
 
     @Column(name = "regdate")
     private Date regdate;
+    
+    @Column(name = "profileImageName")
+    private String profileImageName; // 프로필 이미지 파일 이름
 
     // 기본 생성자
     public User() {}
@@ -44,6 +47,7 @@ public class User {
         this.userNickname = userNickname;
         this.userEmail = userEmail;
         this.regdate = regdate;
+        this.profileImageName = "basic_profile.jpg"; // 기본 프로필 이미지 파일 이름 설정
     }
 
     // Getter 및 Setter 메서드
@@ -101,5 +105,13 @@ public class User {
 
     public void setRegdate(Date regdate) {
         this.regdate = regdate;
+    }
+    
+    public String getProfileImageName() {
+        return profileImageName;
+    }
+
+    public void setProfileImageName(String profileImageName) {
+        this.profileImageName = profileImageName;
     }
 }
