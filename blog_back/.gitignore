@@ -37,4 +37,4 @@ out/
 .vscode/
 
 # Ignore Firebase service account key
-blog_back/bbanghoon-project-firebase-adminsdk-2uxpz-4e64effe95.json
+blog_back/src/main/resources/bbanghoon-project-firebase-adminsdk-2uxpz-4e64effe95.json
