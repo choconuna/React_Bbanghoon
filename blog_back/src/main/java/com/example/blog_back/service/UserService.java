@@ -45,7 +45,31 @@ public class UserService {
         } else {
             throw new RuntimeException("User not found");
         }
-    }    
+    }   
+    
+    public User findUserById(String userId) {
+        User user = userRepository.findByUserId(userId);
+        
+        return user;
+    }
+    
+    // 사용자 인증 로직
+    public boolean authenticateUser(String userId, String userPassword) {
+        User user = userRepository.findByUserId(userId);
+        if(user != null && user.getUserPassword().equals(userPassword)) {
+            return true;
+        }
+        return false;
+    }
+    
+    // 사용자 기존 비밀번호 확인 로직
+    public boolean verifyUserPassword(String userId, String userPassword) {
+        User user = userRepository.findByUserId(userId);
+        if (user != null && user.getUserPassword().equals(userPassword)) {
+            return true;
+        }
+        return false;
+    }
     
     public String getUserNickname(String userId) {
         User user = userRepository.findByUserId(userId);
