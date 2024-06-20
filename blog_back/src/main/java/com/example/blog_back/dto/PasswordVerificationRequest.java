@@ -30,3 +30,4 @@ public class PasswordVerificationRequest {
         this.userPassword = userPassword;
     }
 }
+
