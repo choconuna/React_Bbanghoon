@@ -68,6 +68,17 @@ public class UserController {
         }
     }
     
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUserId(@PathVariable String userId) {
+        User user = userService.findUserById(userId);
+        
+        if(user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    
     static class UserSearchIdRequest {
         private String userName;
         private String userEmail;

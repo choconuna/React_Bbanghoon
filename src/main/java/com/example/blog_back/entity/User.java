@@ -1,11 +1,6 @@
 package com.example.blog_back.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -32,12 +27,29 @@ public class User {
 
     @Column(name = "regdate")
     private Date regdate;
-    
+
     @Column(name = "profileImageName")
     private String profileImageName; // 프로필 이미지 파일 이름
 
+    public enum ProfileImageName {
+        BASIC("basic"),
+        CUSTOMIZE("customize");
+
+        private final String value;
+
+        ProfileImageName(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
     // 기본 생성자
-    public User() {}
+    public User() { 
+        this.profileImageName = "basic";
+    }
 
     // 모든 필드를 초기화하는 생성자
     public User(String userId, String userPassword, String userName, String userNickname, String userEmail, Date regdate) {
@@ -47,7 +59,7 @@ public class User {
         this.userNickname = userNickname;
         this.userEmail = userEmail;
         this.regdate = regdate;
-        this.profileImageName = "basic_profile.jpg"; // 기본 프로필 이미지 파일 이름 설정
+        this.profileImageName = "basic"; // 기본 프로필 이미지 파일 이름 설정
     }
 
     // Getter 및 Setter 메서드
@@ -106,7 +118,7 @@ public class User {
     public void setRegdate(Date regdate) {
         this.regdate = regdate;
     }
-    
+
     public String getProfileImageName() {
         return profileImageName;
     }

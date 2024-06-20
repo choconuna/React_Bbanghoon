@@ -3,3 +3,4 @@
 
 # Explicitly declare files that should always have LF line endings on checkout.
 *.java text eol=lf
+  
