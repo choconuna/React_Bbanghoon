@@ -36,6 +36,11 @@ public class UserService {
             return "Invalid password";
         }
         return "Success";
+    }    
+    
+    public String getUserNickname(String userId) {
+        User user = userRepository.findByUserId(userId);
+        return user != null ? user.getUserNickname() : null;
     }
     
     public String getProfileImageName(String userId) {
@@ -47,10 +52,30 @@ public class UserService {
         }
     }   
     
+    public String getPosition(String userId) {
+        User user = userRepository.findByUserId(userId);
+        return user != null ? user.getPosition() : null;
+    }
+    
     public User findUserById(String userId) {
         User user = userRepository.findByUserId(userId);
         
         return user;
+    }
+    
+    public User updateUser(String userId, User updateUser) {
+        User existingUser = userRepository.findByUserId(userId);
+        if(existingUser != null) {
+            existingUser.setUserPassword(updateUser.getUserPassword());
+            existingUser.setUserName(updateUser.getUserName());
+            existingUser.setUserNickname(updateUser.getUserNickname());
+            existingUser.setUserEmail(updateUser.getUserEmail());
+            existingUser.setPosition(updateUser.getPosition());
+            existingUser.setRegdate(updateUser.getRegdate());
+            existingUser.setProfileImageName(updateUser.getProfileImageName());
+            return userRepository.save(existingUser);
+        }
+        return null;
     }
     
     // 사용자 인증 로직
@@ -69,11 +94,6 @@ public class UserService {
             return true;
         }
         return false;
-    }
-    
-    public String getUserNickname(String userId) {
-        User user = userRepository.findByUserId(userId);
-        return user != null ? user.getUserNickname() : null;
     }
     
     public User findUserByNameAndEmail(String userName, String userEmail) {

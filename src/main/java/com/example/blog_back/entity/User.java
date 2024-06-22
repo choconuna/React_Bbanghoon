@@ -24,6 +24,9 @@ public class User {
 
     @Column(name = "userEmail")
     private String userEmail;
+    
+    @Column(name = "position") 
+    private String position; // 관리자인지, 회원인지
 
     @Column(name = "regdate")
     private Date regdate;
@@ -48,6 +51,7 @@ public class User {
 
     // 기본 생성자
     public User() { 
+        this.position = "member";
         this.profileImageName = "basic";
     }
 
@@ -58,6 +62,7 @@ public class User {
         this.userName = userName;
         this.userNickname = userNickname;
         this.userEmail = userEmail;
+        this.position = "member"; // 회원으로 설정
         this.regdate = regdate;
         this.profileImageName = "basic"; // 기본 프로필 이미지 파일 이름 설정
     }
@@ -109,6 +114,14 @@ public class User {
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
+    }
+    
+    public String getPosition() {
+        return position;
+    }
+    
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     public Date getRegdate() {

@@ -36,9 +36,6 @@ out/
 ### VS Code ###
 .vscode/
 
-# Ignore Firebase service account key
-blog_back/src/main/resources/bbanghoon-project-firebase-adminsdk-2uxpz-c2d6c24f90.json
-
 # Logs
 logs
 *.log
@@ -101,3 +98,5 @@ node_modules/
 # dotenv environment variables file
 .env
 
+# Ignore Firebase service account key
+src/main/resources/bbanghoon-project-firebase-adminsdk-2uxpz-c2d6c24f90.json

@@ -19,6 +19,16 @@ public class UserController {
     public User registerUser(@RequestBody User user) {
         return userService.registerUser(user);
     }
+    
+    @PutMapping("/update/{userId}")
+    public ResponseEntity<User> updateUser(@PathVariable String userId, @RequestBody User updateUser) {
+        User user = userService.updateUser(userId, updateUser);
+        if(user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @GetMapping("/check-duplicate-id/{id}")
     public ResponseEntity<Boolean> checkId(@PathVariable String id) {
