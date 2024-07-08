@@ -28,12 +28,15 @@ public class LoginController {
         String result = userService.loginUser(user.getUserId(), user.getUserPassword());
         if (result.equals("Success")) { // 로그인 성공 시 세션에 사용자 정보 저장
             HttpSession session = request.getSession();
+
+            session.setAttribute("idx", userService.getIdx(user.getUserId()));
             session.setAttribute("userId", user.getUserId());
             session.setAttribute("userNickname", userService.getUserNickname(user.getUserId()));
             session.setAttribute("position", userService.getPosition(user.getUserId()));
             session.setAttribute("profileImageName", userService.getProfileImageName(user.getUserId()));
 
             // 세션 정보 출력
+            System.out.println("세션에 저장된 idx: " + session.getAttribute("idx"));
             System.out.println("세션 생성됨, 세션 ID: " + session.getId());
             System.out.println("세션에 저장된 userId: " + session.getAttribute("userId"));
             System.out.println("세션에 저장된 userNickname: " + session.getAttribute("userNickname"));
@@ -63,10 +66,11 @@ public class LoginController {
         if (session != null) {
             String userId = (String) session.getAttribute("userId");
             String userNickname = (String) session.getAttribute("userNickname");
-            String position = (String)session.getAttribute("position");
+            String position = (String) session.getAttribute("position");
             String profileImageName = (String) session.getAttribute("profileImageName");
-            System.out.println("세션 정보: " + userId + " " + userNickname + " " + position + " " + profileImageName);
-            return ResponseEntity.ok(new UserSession(userId, userNickname, position, profileImageName));
+            Long idx = (Long) session.getAttribute("idx");
+            System.out.println("세션 정보: " + idx + " " + userId + " " + userNickname + " " + position + " " + profileImageName);
+            return ResponseEntity.ok(new UserSession(idx, userId, userNickname, position, profileImageName));
         } else {
             return ResponseEntity.status(400).body("No active session");
         }
@@ -107,7 +111,7 @@ public class LoginController {
 
         String userId = (String) session.getAttribute("userId");
         String userPassword = requestDto.getUserPassword();
-        
+
         System.out.println("가져온 세션: " + session + ", 사용자 ID: " + userId + ", 입력된 비밀번호: " + userPassword);
 
         // 서비스 계층에서 사용자의 기존 비밀번호 확인
@@ -122,16 +126,22 @@ public class LoginController {
 }
 
 class UserSession {
+    private Long idx;
     private String userId;
     private String userNickname;
     private String position;
     private String profileImageName;
 
-    public UserSession(String userId, String userNickname, String position, String profileImageName) {
+    public UserSession(Long idx, String userId, String userNickname, String position, String profileImageName) {
+        this.idx = idx;
         this.userId = userId;
         this.userNickname = userNickname;
         this.position = position;
         this.profileImageName = profileImageName;
+    }
+
+    public Long getIdx() {
+        return idx;
     }
 
     public String getUserId() {
@@ -141,7 +151,7 @@ class UserSession {
     public String getUserNickname() {
         return userNickname;
     }
-    
+
     public String getPosition() {
         return position;
     }

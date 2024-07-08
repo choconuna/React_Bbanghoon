@@ -21,7 +21,7 @@ public class UserController {
     }
     
     @PutMapping("/update/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable String userId, @RequestBody User updateUser) {
+    public ResponseEntity<User> updateUser(@PathVariable("userId") String userId, @RequestBody User updateUser) {
         User user = userService.updateUser(userId, updateUser);
         if(user != null) {
             return ResponseEntity.ok(user);
@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/check-duplicate-id/{id}")
-    public ResponseEntity<Boolean> checkId(@PathVariable String id) {
+    public ResponseEntity<Boolean> checkId(@PathVariable("id") String id) {
         System.out.println("아이디 중복 확인 요청: " + id);
         Boolean isDuplicated = userService.isIdDuplicated(id);
         System.out.println("아이디 중복 여부: " + isDuplicated);
@@ -39,13 +39,13 @@ public class UserController {
     }
 
     @GetMapping("/check-duplicate-nickname/{nickname}")
-    public ResponseEntity<Boolean> checkNickname(@PathVariable String nickname) {
+    public ResponseEntity<Boolean> checkNickname(@PathVariable("nickname") String nickname) {
         Boolean isDuplicated = userService.isNicknameDuplicated(nickname);
         return ResponseEntity.ok(isDuplicated);
     }
 
     @GetMapping("/check-duplicate-email/{email}")
-    public ResponseEntity<Boolean> checkEmail(@PathVariable String email) {
+    public ResponseEntity<Boolean> checkEmail(@PathVariable("email") String email) {
         Boolean isDuplicated = userService.isEmailDuplicated(email);
         return ResponseEntity.ok(isDuplicated);
     }
@@ -79,8 +79,11 @@ public class UserController {
     }
     
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserId(@PathVariable String userId) {
+    public ResponseEntity<User> getUserId(@PathVariable("userId") String userId) {
+        System.out.println("가져온 사용자 정보: " + userId);
         User user = userService.findUserById(userId);
+        
+        System.out.println("가져온 사용자 정보: " + user);
         
         if(user != null) {
             return ResponseEntity.ok(user);

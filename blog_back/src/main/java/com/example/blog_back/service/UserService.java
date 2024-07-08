@@ -57,6 +57,17 @@ public class UserService {
         return user != null ? user.getPosition() : null;
     }
     
+    public Long getIdx(String userId) {
+        User user = userRepository.findByUserId(userId);
+        return user != null ? user.getIdx() : null;
+    }
+    
+    public User findByIdx(Long idx) {
+        User user = userRepository.findByIdx(idx);
+        
+        return user;
+    }
+    
     public User findUserById(String userId) {
         User user = userRepository.findByUserId(userId);
         

@@ -27,7 +27,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    // implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect' 
 	implementation 'mysql:mysql-connector-java:8.0.32' // 정확한 버전 추가
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
@@ -41,6 +40,11 @@ dependencies {
 	
 	// Firebase 의존성 추가
   	implementation 'com.google.firebase:firebase-admin:9.2.0'
+	
+	// JWT 의존성 추가
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 }
 
 tasks.named('test') {

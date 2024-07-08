@@ -1,10 +1,17 @@
 package com.example.blog_back.entity;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "user")
+@JsonIgnoreProperties({"reviews"}) // 리뷰 필드를 직렬화에서 제외
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,6 +55,11 @@ public class User {
             return value;
         }
     }
+    
+    // 양방향 관계 설정
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore // 양방향 연관 관계에서이 무한 재귀 문제 방지 위함
+    private List<Review> reviews = new ArrayList<>();
 
     // 기본 생성자
     public User() { 
@@ -138,5 +150,23 @@ public class User {
 
     public void setProfileImageName(String profileImageName) {
         this.profileImageName = profileImageName;
+    }
+    
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public void addReview(Review review) {
+        reviews.add(review);
+        review.setUser(this);
+    }
+
+    public void removeReview(Review review) {
+        reviews.remove(review);
+        review.setUser(null);
     }
 }
