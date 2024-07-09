@@ -85,12 +85,31 @@ public class ReviewController {
                     "User Nickname: " + (review.getUser() != null ? review.getUser().getUserNickname() : "null"));
         });
 
+        System.out.println("Reviews: " + ResponseEntity.ok(reviews));
         return ResponseEntity.ok(reviews);
     }
 
     @PostMapping("/increaseViewCount/{reviewId}")
     public ResponseEntity<Review> increaseViewCount(@PathVariable("reviewId") Long reviewId) {
         Review updatedReview = reviewService.increaseViewCount(reviewId);
+        return ResponseEntity.ok(updatedReview);
+    }
+    
+    @PostMapping("/toggleLikeCount")
+    public ResponseEntity<Review> increaseLikeCount(@RequestBody Map<String, Object> likeData) {
+        Long user_idx = Long.valueOf(likeData.get("user_idx").toString());
+        Long review_id = Long.valueOf(likeData.get("review_id").toString());
+        int isLiked = Integer.parseInt(likeData.get("isLiked").toString());
+        
+        boolean isLikedState = true;
+        if(isLiked == 1) { // 좋아요를 취소한 경우
+            isLikedState = false;
+        }
+        
+        System.out.println("좋아요 카운트 처리 실행");
+        System.out.println("좋아요 처리 데이터: " + user_idx + " " + review_id + " " + isLiked + " " + isLikedState);
+        Review updatedReview = reviewService.toggleLikeCount(user_idx, review_id, isLikedState);
+        
         return ResponseEntity.ok(updatedReview);
     }
 

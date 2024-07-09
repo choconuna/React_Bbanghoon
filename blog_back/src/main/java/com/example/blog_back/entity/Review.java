@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties; 
 
 @Entity
@@ -19,7 +18,7 @@ public class Review {
     
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_idx", referencedColumnName = "idx")
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "reviews"}) // 무한 재귀 방지
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "reviews", "reviewLikes"}) // 무한 재귀 방지
     private User user;
 
     @Column(name = "category")
@@ -43,15 +42,8 @@ public class Review {
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewImage> reviewImages = new ArrayList<>();
     
-    public void addReviewImage(ReviewImage reviewImage) {
-        reviewImages.add(reviewImage);
-        reviewImage.setReview(this);
-    }
-    
-    public void removeReviewImage(ReviewImage reviewImage) {
-        reviewImages.remove(reviewImage);
-        reviewImage.setReview(null);
-    }
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ReviewLike> reviewLikes = new ArrayList<>();
     
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -70,6 +62,16 @@ public class Review {
     // 조회수 증가 메서드
     public void increaseViewCount() {
         this.viewCount++;
+    }
+    
+    // 좋아요 증가 메서드
+    public void increaseLikeCount() {
+        this.likeCount++;
+    }
+    
+    // 좋아요 감소 메서드
+    public void decreaseLikeCount() {
+        this.likeCount--;
     }
 
     // 기본 생성자
@@ -163,6 +165,34 @@ public class Review {
     
     public void setReviewImages(List<ReviewImage> reviewImages) {
         this.reviewImages = reviewImages;
+    }
+    
+    public void addReviewImage(ReviewImage reviewImage) {
+        reviewImages.add(reviewImage);
+        reviewImage.setReview(this);
+    }
+    
+    public void removeReviewImage(ReviewImage reviewImage) {
+        reviewImages.remove(reviewImage);
+        reviewImage.setReview(null);
+    }
+    
+    public List<ReviewLike> getReviewLikes(){
+        return reviewLikes;
+    }
+    
+    public void setReviewLikes(List<ReviewLike> reviewLikes) {
+        this.reviewLikes = reviewLikes;
+    }
+    
+    public void addReviewLike(ReviewLike reviewLike) {
+        reviewLikes.add(reviewLike);
+        reviewLike.setReview(this);
+    }
+    
+    public void removeReviewLike(ReviewLike reviewLike) {
+        reviewLikes.remove(reviewLike);
+        reviewLike.setReview(null);
     }
     
     public LocalDateTime getCreatedAt() {

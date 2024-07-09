@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "user")
-@JsonIgnoreProperties({"reviews"}) // 리뷰 필드를 직렬화에서 제외
+@JsonIgnoreProperties({"reviews", "reviewLikes"}) // 리뷰 필드를 직렬화에서 제외
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,9 +58,14 @@ public class User {
     
     // 양방향 관계 설정
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore // 양방향 연관 관계에서이 무한 재귀 문제 방지 위함
+    @JsonIgnore // 양방향 연관 관계에서의 무한 재귀 문제 방지 위함
     private List<Review> reviews = new ArrayList<>();
-
+    
+    // 양방향 관계 설정
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore // 양방향 연관 관계에서의 무한 재귀 문제 방지 위함
+    private List<ReviewLike> reviewLikes = new ArrayList<>();
+    
     // 기본 생성자
     public User() { 
         this.position = "member";
@@ -168,5 +173,23 @@ public class User {
     public void removeReview(Review review) {
         reviews.remove(review);
         review.setUser(null);
+    }
+    
+    public List<ReviewLike> getReviewLikes() {
+        return reviewLikes;
+    }
+    
+    public void setReviewLikes(List<ReviewLike> reviewLikes) {
+        this.reviewLikes = reviewLikes;
+    }
+    
+    public void addReviewLike(ReviewLike reviewLike) {
+        reviewLikes.add(reviewLike);
+        reviewLike.setUser(this);
+    }
+    
+    public void removeReviewLike(ReviewLike reviewLike) {
+        reviewLikes.remove(reviewLike);
+        reviewLike.setUser(null);
     }
 }
